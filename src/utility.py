@@ -8,6 +8,7 @@ utility functions
 import re
 from datetime import datetime,timedelta
 import logClass as lc
+import requestClass as rc
 
 """ global valiables """
 
@@ -19,9 +20,11 @@ file_name = "../insight_testsuite/tests/test_features/log_input/log.txt"
 debug = False
 
 
-# Global List of Log objects
+# Global dict of Log objects
 logList = {}
 
+# Global dict of resource objects
+resList = {}
 
 """ END: global valiables """
 
@@ -58,17 +61,30 @@ def addToLogList(obj):
 
 	# if the host exsists in the list
 	if logList.has_key(host):
-		logList[host].addCount()
+		logList[host].addCount(request,size)
 	else:
 		logList[host] = lc.Log(obj)
 		# add to frequest host list if the the min is less than 1
 
+def addToResList(res, size):
+	typ , r, proto  = req_parser(res)
+
+	if resList.has_key(r):
+		resList[r].addSize(size)
+	else:
+		resList[r] = rc.Request(r, size )
 
 
 def printList():
 	for o in logList.keys():
 		logList[o].display()
 	print lc.Log.logCount
+
+def printResList():
+	for o in resList.keys():
+		# print o
+		resList[o].display()
+	print rc.Request.reqCount  
 
 
 def writeToFile(fileName, list):
@@ -79,10 +95,16 @@ def writeToFile(fileName, list):
 def writeFreqToFile(list):
 	thefile = open("../log_output/hosts.txt", 'w')
 	for item in list:
-		thefile.write(item.host + ", " + str(item.count)+ "\n")
+		thefile.write(item.host """ + ", " + str(item.count)+""" "\n")
 
 def sortReq(list):
 	return  sorted(list, key=lambda x: x.count, reverse=True)
+
+
+def writeResToFile(list):
+	thefile = open("../log_output/resources.txt", 'w')
+	for item in list:
+		thefile.write(item.res + ", " + str(item.size)+ "\n")
 
 
 

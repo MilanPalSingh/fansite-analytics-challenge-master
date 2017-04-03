@@ -16,7 +16,7 @@ class Log:
 	min = -1
 
 	# range - for most active host
-	range = 3
+	range = 4
 
 	# most frequent host
 	freqHost = []
@@ -26,46 +26,43 @@ class Log:
 		self.host, __ignore, __ignore, self.date, self.request, self.status, self.size = d
 		self.date = ut.dt_parse(self.date)
 		# ut.req_parser(self.request)
-		self.request = rc.Request(ut.req_parser(self.request))
-		self.count = self.request.count
+		ut.addToResList(self.request, self.size)
+		# add to frequest host list if the the min is less than 1
+		# self.request = rc.Request(ut.req_parser(self.request), self.size)
+		self.count = 1
 		self.rank = 0 # range 1-10
 		# inc the global request count
 		Log.logCount += 1
 		self.addToFreqHostList()
 
 
-	def addCount(self):
+	def addCount(self, req, size):
 		Log.logCount += 1
-		self.request.count +=1
-		self.count = self.request.count
+		# self.request.count +=1
+		self.count += 1 
+		ut.addToResList(req, size)
 		self.addToFreqHostList()
 
 
 	def getCount(self):
-		return self.request.count
+		return self.count
 
 	def addToFreqHostList(self):
 		# if ut.debug: print "size of the list", len(Log.range)
 		if Log.min < self.count :
-			if len(Log.freqHost) < Log.range :
-				Log.freqHost.append(self)
-				# self.changeRank(1)
-				# if ut.debug: print len(Log.freqHost)
+			if self in Log.freqHost:
 				self.resetRanks()
-				# printFreqHostToFile()
+			# else:
 			else:
-				# check the current obj is in the Frequest list
-				# if yes:
-				if self in Log.freqHost:
-					self.resetRanks()
-				# else:
+				if len(Log.freqHost) < Log.range :
+					Log.freqHost.append(self)
 				else:
 					# del the last element and reset it's rank to 0
 					Log.freqHost[Log.range-1].changeRank(0)
 					Log.freqHost.remove(Log.freqHost[Log.range-1])
 					# add the obj to the last
 					Log.freqHost.append(self)
-					self.resetRanks()
+				self.resetRanks()
 
 
 	def changeRank(self, r):
@@ -75,7 +72,7 @@ class Log:
 
 
 	def display(self):
-		print self.host , self.count#, self.request.display()
+		print self.host , self.count , self.rank#, self.request.display()
 
 	def isEqual(self, obj):
 		return True if self.count > obj.count else False

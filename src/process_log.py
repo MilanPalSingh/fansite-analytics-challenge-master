@@ -3,6 +3,7 @@
 import sys
 import utility as ut
 import logClass as lc
+import requestClass as rc
 
 
 
@@ -26,11 +27,16 @@ def main(argv):
 		for line in f:
 			processLog(line)
 
-	if ut.debug:	
+	if True:	
 		ut.printList()
 		print "print the freq List"
 		for l in lc.Log.freqHost:
-			if ut.debug: l.display()
+			l.display()
+		print "print the res list"
+		ut.printResList()
+		print "print the freq List"
+		for l in rc.Request.freqRes:
+			l.display()
 
 
 # main function call
