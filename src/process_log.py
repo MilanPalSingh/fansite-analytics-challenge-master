@@ -1,18 +1,36 @@
 # your Python code to implement the features could be placed here
 # note that you may use any language, there is no preference towards Python
 import sys
-import parser as pr
-# global valiables 
-file_name = "../insight_testsuite/tests/test_features/log_input/log.txt"
-debug = False
+import utility as ut
+import logClass as lc
+
+
+
+
+
+def processLog(line):
+	# parse the log file and creat the Log object 
+	# obj = lc.Log(ut.parser(line))
+	# debug statment 
+	# if ut.debug :	obj.display()
+	ut.addToLogList(ut.parser(line))
+
+
 
 
 
 # Main function - start point of the application
 def main(argv):
-	with open(file_name) as f:
+	# open file and read line by line
+	with open(ut.file_name) as f:
 		for line in f:
-			pr.parser(line)
+			processLog(line)
+
+	if ut.debug:	
+		ut.printList()
+		print "print the freq List"
+		for l in lc.Log.freqHost:
+			if ut.debug: l.display()
 
 
 # main function call
