@@ -1,4 +1,4 @@
-pizza.letters.com, 20
-199.72.81.55, 11
-burger.letters.com, 6
-199.72.81.56, 3
+pizza.letters.com,20
+199.72.81.55,11
+burger.letters.com,6
+199.72.81.56,3

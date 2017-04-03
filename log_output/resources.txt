@@ -1,4 +1,4 @@
-/login, 19880
-/shuttle/countdown/, 7970
-/shuttle/liftoff.html, 24
-/shuttle/countdown/liftoff.html, 0
+/login
+/shuttle/countdown/
+/shuttle/liftoff.html
+/shuttle/countdown/liftoff.html

@@ -27,7 +27,7 @@ def main(argv):
 		for line in f:
 			processLog(line)
 
-	if True:	
+	if ut.debug:	
 		ut.printList()
 		print "print the freq List"
 		for l in lc.Log.freqHost:

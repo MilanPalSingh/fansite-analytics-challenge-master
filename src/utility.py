@@ -95,7 +95,7 @@ def writeToFile(fileName, list):
 def writeFreqToFile(list):
 	thefile = open("../log_output/hosts.txt", 'w')
 	for item in list:
-		thefile.write(item.host """ + ", " + str(item.count)+""" "\n")
+		thefile.write(item.host + "," + str(item.count)+ "\n")
 
 def sortReq(list):
 	return  sorted(list, key=lambda x: x.count, reverse=True)
@@ -104,7 +104,7 @@ def sortReq(list):
 def writeResToFile(list):
 	thefile = open("../log_output/resources.txt", 'w')
 	for item in list:
-		thefile.write(item.res + ", " + str(item.size)+ "\n")
+		thefile.write(item.res + "\n")#+ ", " + str(item.size)+ "\n")
 
 
 
