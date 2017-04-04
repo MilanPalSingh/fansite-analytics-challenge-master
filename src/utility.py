@@ -55,15 +55,15 @@ def req_parser(r):
 	return r.split()
 
 # add the log object to the globle log list "logList"
-def addToLogList(obj):
+def addToLogList(obj, l):
 	# if debug :	obj.display()
 	host, __ignore, __ignore, date, request, status, size = obj
 
 	# if the host exsists in the list
 	if logList.has_key(host):
-		logList[host].addCount(request,size)
+		logList[host].addCount(request,size, status, dt_parse(date), l)
 	else:
-		logList[host] = lc.Log(obj)
+		logList[host] = lc.Log(obj, l)
 		# add to frequest host list if the the min is less than 1
 
 def addToResList(res, size):
@@ -91,6 +91,10 @@ def writeToFile(fileName, list):
 	thefile = open(fileName, 'w')
 	for item in list:
 		thefile.write("%s, %s\n" % item.host, item.count)
+
+def appendToFile(fileName, l):
+	thefile = open(fileName, 'a')
+	thefile.write( l )
 
 def writeFreqToFile(list):
 	thefile = open("../log_output/hosts.txt", 'w')

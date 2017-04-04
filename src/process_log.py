@@ -14,7 +14,7 @@ def processLog(line):
 	# obj = lc.Log(ut.parser(line))
 	# debug statment 
 	# if ut.debug :	obj.display()
-	ut.addToLogList(ut.parser(line))
+	ut.addToLogList(ut.parser(line), line)
 
 
 

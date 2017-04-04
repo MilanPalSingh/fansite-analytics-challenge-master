@@ -22,7 +22,7 @@ class Log:
 	freqHost = []
 
 
-	def __init__(self, d ): 
+	def __init__(self, d, l ): 
 		self.host, __ignore, __ignore, self.date, self.request, self.status, self.size = d
 		self.date = ut.dt_parse(self.date)
 		# ut.req_parser(self.request)
@@ -35,13 +35,23 @@ class Log:
 		Log.logCount += 1
 		self.addToFreqHostList()
 
+		# list for past consicutive login fails for the host
+		self.logInFailTime = []
+		self.isBlocked = False 
+		self.blockTime = self.date 
+		# function to check the present request
+		self.checkReq(self.request, self.status, self.date, l)
 
-	def addCount(self, req, size):
+
+
+	def addCount(self, req, size, status, date, l ):
 		Log.logCount += 1
 		# self.request.count +=1
 		self.count += 1 
 		ut.addToResList(req, size)
 		self.addToFreqHostList()
+		self.checkReq( req, status, date, l)
+
 
 
 	def getCount(self):
@@ -94,9 +104,75 @@ class Log:
 				Log.max = Log.freqHost[0].count
 		ut.writeFreqToFile(Log.freqHost) 
 
+	# function takes 3 parameters { request, status, log to be written to the file }
+	def checkReq(self, req, status, date,  log):
+		# if ut.debug: print log , self.isBlocked
+		if self.isBlocked :
+			if self.isDifLess5(date):
+				# if ut.debug: print "write to the file"
+				ut.appendToFile("../log_output/blocked.txt", log)
+				return 
+			else:
+				self.isBlocked = False
+				self.logInFailTime = []
+
+		if self.isLoginFail(req, status):
+			self.logInFailTime.append(date)
+			self.resetBlock()
+
+		
+		# add to check the time
+		# if(!self.isBlocked):
+		# 	if(self.isLoginFail(req,status)):
+		# 		pass
+		# else:
+		# 	ut.appendToFile("../log_output/blocked.txt ", log)
 
 
+	def isLoginFail(self, req, status):
+		typ , r, proto  = ut.req_parser(req)
+		if (int(status)==401) and (r == "/login"):
+			return True
+		else:
+			return False
 
+	def isDifLess5(self, d):
+		# if ut.debug: print "minutes: ",(d - self.blockTime ).total_seconds()/(5*60)
+		if (d - self.blockTime ).total_seconds() > (5*60):
+			return False
+		else:
+			return True
+
+	def isDifLess20(self, d1, d2):
+		# if ut.debug: print "seconds: ",(d2 - d1 ).total_seconds()
+		if (d2 - d1).total_seconds() >20:
+			return False
+		else:
+			return True
+
+
+	def resetBlock(self):
+
+		# check with thrid element if the time is less than 5 min del the last element if not del the 
+		# if self.isBlocked:
+
+		# check with the last entry with the time from the start and del which ever is greater than 20 sec
+		# elif len(self.logInFailTime) >1:
+		l = len(self.logInFailTime)
+		for i in range(0, l -1):
+			if self.isDifLess20(self.logInFailTime[i] , self.logInFailTime[l-1] ):
+				break
+			else:
+				self.logInFailTime.remove(self.logInFailTime[i])
+
+
+		if len(self.logInFailTime) ==3:
+			self.isBlocked = True
+			self.blockTime = self.logInFailTime[2]
+		else: 
+			self.isBlocked = False
+
+		# return self.isBlocked
 
 
 
