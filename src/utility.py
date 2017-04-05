@@ -9,6 +9,7 @@ import re
 from datetime import datetime,timedelta
 import logClass as lc
 import requestClass as rc
+import timeClass as tc
 
 """ global valiables """
 
@@ -25,6 +26,9 @@ logList = {}
 
 # Global dict of resource objects
 resList = {}
+
+# feature 3 - global time window list
+# timeList = {}
 
 """ END: global valiables """
 
@@ -65,6 +69,34 @@ def addToLogList(obj, l):
 	else:
 		logList[host] = lc.Log(obj, l)
 		# add to frequest host list if the the min is less than 1
+
+
+
+
+
+# for feature 3 
+def addToTimeList(obj, l):
+	host, __ignore, __ignore, date, request, status, size = obj
+
+	if len(tc.TimeW.timeList) == 0:
+		tc.TimeW.timeList.append(tc.TimeW(obj,l))
+	elif tc.TimeW.currentTime != dt_parse(date):
+		tc.TimeW.timeList.append(tc.TimeW(obj,l))
+		tc.TimeW.currentTime = dt_parse(date)
+		tc.TimeW.timeList[len(tc.TimeW.timeList)-1].orderList()
+	else:
+		tc.TimeW.timeList[len(tc.TimeW.timeList)-1].orderList()
+		
+
+	
+
+
+
+
+
+
+
+
 
 def addToResList(res, size):
 	typ , r, proto  = req_parser(res)

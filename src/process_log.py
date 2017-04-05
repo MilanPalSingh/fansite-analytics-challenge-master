@@ -15,6 +15,7 @@ def processLog(line):
 	# debug statment 
 	# if ut.debug :	obj.display()
 	ut.addToLogList(ut.parser(line), line)
+	ut.addToTimeList(ut.parser(line), line)
 
 
 

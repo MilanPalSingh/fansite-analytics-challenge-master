@@ -1,3 +1,3 @@
-199.72.81.55,6
-burger.letters.com,3
-unicomp6.unicomp.net,1
+199.72.81.55,18
+burger.letters.com,9
+unicomp6.unicomp.net,3
