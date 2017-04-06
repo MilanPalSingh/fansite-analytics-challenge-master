@@ -21,10 +21,7 @@ class Request:
 	def __init__(self, d , size):
 		self.res = d
 		self.count = 1 
-		if size == "-\n":
-			self.size =0
-		else:
-			self.size = int(size)
+		self.size = int(size)
 		self.rank = -1
 		Request.reqCount += 1
 		self.addToFreqResList()
@@ -37,10 +34,7 @@ class Request:
 	def addSize(self, size):
 		Request.reqCount += 1
 		# self.request.count +=1
-		if size == "-\n":
-			self.size += 0
-		else:
-			self.size += int(size )
+		self.size += int(size )
 		self.addToFreqResList()
 
 	# manage the Resource List - sort them according to size of the resource request

@@ -137,7 +137,7 @@ class Log:
 
 	def isLoginFail(self, req, status):
 		typ , r, proto  = ut.req_parser(req)
-		if (status=="401") and (r == "/login"):
+		if (int(status)==401) and (r == "/login"):
 			return True
 		else:
 			return False

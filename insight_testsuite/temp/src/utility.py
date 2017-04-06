@@ -60,14 +60,7 @@ def parser(l):
 # Function to parse the request parameters 
 def req_parser(r):
 	# print r.split()
-	# print r
-	p = " "
-	t, r = r.split(" ", 1)
-	# print ' ' in r
-	if ' ' in r:
-		r, p = r.split(" ",1)
-
-	return [t, r, p]
+	return r.split()
 
 # add the log object to the globle log list "logList"
 def addToLogList(obj, l):
