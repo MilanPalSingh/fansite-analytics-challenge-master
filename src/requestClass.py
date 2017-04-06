@@ -11,7 +11,7 @@ class Request:
 	# reqSize = 0
 
 	# number of frequent resources 
-	range = 4
+	range = 10
 	min = -1
 	max  = -1
 	# list of top frequent resources  
